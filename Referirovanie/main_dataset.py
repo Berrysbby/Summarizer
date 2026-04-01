@@ -1,5 +1,3 @@
-# main.py
-
 from typing import List, Tuple
 
 from datasets import load_dataset
@@ -65,10 +63,6 @@ def load_gazeta_dataset(split: str = "test", limit: int = None) -> Tuple[List[st
 
 
 def print_summaries_array(summaries: List[str]):
-    """
-    Вывод массива рефератов в формате задания:
-    ["...", "..."]
-    """
     print("\nРефераты:")
     print("[")
     for i, summary in enumerate(summaries):
@@ -95,25 +89,15 @@ def print_examples(texts: List[str], references: List[str], summaries: List[str]
 
 
 if __name__ == "__main__":
-    # =========================================
-    # НАСТРОЙКИ ЗАПУСКА
-    # =========================================
 
-    # Какой сплит использовать:
-    # "train", "validation", "test"
     dataset_split = "test"
 
     # Сколько примеров обработать:
     # None = весь сплит
-    # 20 / 50 / 100 = для быстрого теста
     limit = 50
 
-    # Сколько примеров показать в консоли
+    # Сколько примеров показать
     examples_to_show = 5
-
-    # =========================================
-    # ЗАГРУЗКА ДАННЫХ
-    # =========================================
 
     print(f"Загрузка датасета Gazeta (split='{dataset_split}')...")
     texts, references = load_gazeta_dataset(split=dataset_split, limit=limit)
@@ -123,29 +107,17 @@ if __name__ == "__main__":
 
     print(f"Загружено документов: {len(texts)}")
 
-    # =========================================
-    # ГЕНЕРАЦИЯ РЕФЕРАТОВ
-    # =========================================
 
     print("Генерация рефератов...")
     summaries = build_abstracts(texts)
 
-    # =========================================
-    # ВЫВОД РЕЗУЛЬТАТОВ
-    # =========================================
 
     print_summaries_array(summaries)
 
-    # =========================================
-    # ОЦЕНКА ROUGE
-    # =========================================
 
     print("\nВычисление ROUGE...")
     scores = evaluate_rouge(summaries, references)
     print_rouge_scores(scores)
 
-    # =========================================
-    # НЕСКОЛЬКО ПРИМЕРОВ
-    # =========================================
 
     print_examples(texts, references, summaries, count=examples_to_show)

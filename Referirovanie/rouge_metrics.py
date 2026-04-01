@@ -1,5 +1,3 @@
-# rouge_metrics.py
-
 from collections import Counter
 from typing import Dict, List, Tuple
 import re
@@ -115,8 +113,6 @@ def evaluate_rouge(summaries: List[str], references: List[str]) -> Dict[str, Dic
     - ROUGE-1
     - ROUGE-2
     - ROUGE-L
-
-    Важно: references должны быть "золотым стандартом" (ручные рефераты).
     """
     if len(summaries) != len(references):
         raise ValueError("Количество summary и reference должно совпадать")

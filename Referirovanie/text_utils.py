@@ -1,5 +1,3 @@
-# text_utils.py
-
 import re
 from typing import List, Tuple
 import pymorphy3

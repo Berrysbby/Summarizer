@@ -1,5 +1,3 @@
-# summarizer.py
-
 import re
 from collections import Counter
 from typing import List, Tuple, Set
@@ -180,7 +178,7 @@ def _extract_fragment_from_original(sentence: str, sentence_data: List[Tuple[str
     # Берем фрагмент из оригинального предложения
     fragment = sentence[start_char:end_char]
 
-    # Чуть расширяем по символам до ближайших "естественных" границ,
+    # Чуть расширяем по символам до ближайших границ,
     # но не захватываем слишком много.
     left = start_char
     right = end_char

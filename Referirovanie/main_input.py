@@ -1,14 +1,8 @@
-# main.py
-
 from summarizer import summarize_text
 from rouge_metrics import evaluate_rouge
 
 
 def build_abstracts(texts):
-    """
-    Вход: массив текстов
-    Выход: массив рефератов
-    """
     return [summarize_text(text) for text in texts]
 
 
@@ -28,23 +22,6 @@ def print_rouge_scores(scores):
 
 
 def parse_input_file(file_path):
-    """
-    Чтение входного файла НЕ в JSON формате.
-
-    Поддерживаемый формат:
-
-    TEXTS:
-    текст 1
-    ===
-    текст 2
-
-    REFERENCES:
-    реферат 1
-    ===
-    реферат 2
-
-    REFERENCES - необязательный блок.
-    """
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read().strip()
 
@@ -54,17 +31,15 @@ def parse_input_file(file_path):
     if "TEXTS:" not in content:
         raise ValueError("В файле должен быть блок TEXTS:")
 
-    # Разделяем на TEXTS и REFERENCES (если есть)
     if "REFERENCES:" in content:
         texts_part, references_part = content.split("REFERENCES:", 1)
     else:
         texts_part = content
         references_part = None
 
-    # Убираем заголовок TEXTS:
     texts_part = texts_part.replace("TEXTS:", "", 1).strip()
 
-    # Разбиваем документы по ===
+
     texts = [doc.strip() for doc in texts_part.split("===") if doc.strip()]
 
     references = []
@@ -76,7 +51,6 @@ def parse_input_file(file_path):
 
 
 if __name__ == "__main__":
-    # Укажи имя входного файла здесь
     input_file = "input.txt"
 
     texts, references = parse_input_file(input_file)
@@ -87,17 +61,14 @@ if __name__ == "__main__":
 
     summaries = build_abstracts(texts)
 
-    # Вывод массива рефератов в консоль
     print("Рефераты:")
     print("[")
     for i, summary in enumerate(summaries):
         end_symbol = "," if i < len(summaries) - 1 else ""
-        # Экранируем кавычки внутри текста для красивого вывода
         safe_summary = summary.replace('"', '\\"')
         print(f'  "{safe_summary}"{end_symbol}')
     print("]")
 
-    # Если есть золотой стандарт - считаем ROUGE
     if references:
         if len(references) != len(summaries):
             raise ValueError("Количество references должно совпадать с количеством texts")
